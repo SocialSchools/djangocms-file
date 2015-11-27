@@ -46,7 +46,7 @@ class File(CMSPlugin):
         """
         return "file/%s/%s/%s" % (instance.file, connection.schema_name, filename)
 
-    file = models.FileField(_("file"), upload_to=get_plugin_media_path)
+    file = models.FileField(_("file"), upload_to=get_upload_path)
     title = models.CharField(_("title"), max_length=255, null=True, blank=True)
     target = models.CharField(_("target"), blank=True, max_length=100, choices=((
         ("", _("same window")),
