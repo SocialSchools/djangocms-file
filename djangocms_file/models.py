@@ -44,7 +44,7 @@ class File(CMSPlugin):
         Returns the upload path for the theming media files, which is in a
         separate folder for clarity.
         """
-        return "file/%s/%s/%s" % (instance.file, connection.schema_name, filename)
+        return "file/%s/%s" % (connection.schema_name, filename)
 
     file = models.FileField(_("file"), upload_to=get_upload_path)
     title = models.CharField(_("title"), max_length=255, null=True, blank=True)
