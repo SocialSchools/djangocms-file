@@ -1,6 +1,7 @@
 import os
-
-from django.db import models
+# Override base upload path so that the paths are
+# namespaced now
+from django.db import models, connection
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.utils.translation import ugettext_lazy as _
@@ -38,6 +39,13 @@ class File(CMSPlugin):
     The icon search is currently performed within get_icon_url; this is
     probably a performance concern.
     """
+    def get_upload_path(instance, filename):
+        """
+        Returns the upload path for the theming media files, which is in a
+        separate folder for clarity.
+        """
+        return "file/%s/%s/%s" % (instance.file, connection.schema_name, filename)
+
     file = models.FileField(_("file"), upload_to=get_plugin_media_path)
     title = models.CharField(_("title"), max_length=255, null=True, blank=True)
     target = models.CharField(_("target"), blank=True, max_length=100, choices=((
