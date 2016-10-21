@@ -1,6 +1,6 @@
 import os
 
-from django.db import models
+from django.db import models, connection
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.utils.translation import ugettext_lazy as _
@@ -16,7 +16,19 @@ except ImportError:
         """
         return instance.get_media_path(filename)
 from cms.utils.compat.dj import python_2_unicode_compatible
+from django.utils.deconstruct import deconstructible
 
+
+@deconstructible
+class UploadPath(object):
+
+    def __init__(self, sub_path):
+        self.path = sub_path
+
+    def __call__(self, instance, filename):
+        return "files/%s/%s" % (connection.schema_name, filename)
+
+get_upload_path = UploadPath('FilePlugin')
 
 @python_2_unicode_compatible
 class File(CMSPlugin):
@@ -46,7 +58,7 @@ class File(CMSPlugin):
     cmsplugin_ptr = models.OneToOneField(
         CMSPlugin, related_name='djangocms_file_file', parent_link=True)
 
-    file = models.FileField(_("file"), upload_to=get_plugin_media_path)
+    file = models.FileField(_("file"), upload_to=get_upload_path)
     title = models.CharField(
         _("title"), max_length=255, null=True, blank=True,
         help_text=_("Optional title to display. If not supplied, the filename "
