@@ -1,3 +1,4 @@
+import os
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
@@ -14,7 +15,12 @@ class FilePlugin(CMSPluginBase):
     text_enabled = True
 
     def render(self, context, instance, placeholder):
+        pdf = False
+        ext = os.path.splitext(instance.file.name)[-1].lower()
+        if ext == '.pdf':
+            pdf = True
         context.update({
+            'pdf': pdf,
             'object': instance,
             'placeholder': placeholder
         })
