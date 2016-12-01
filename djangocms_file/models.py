@@ -59,6 +59,7 @@ class File(CMSPlugin):
         CMSPlugin, related_name='djangocms_file_file', parent_link=True)
 
     file = models.FileField(_("file"), upload_to=get_upload_path)
+    show_pdf_preview = models.BooleanField(default=False)
     title = models.CharField(
         _("title"), max_length=255, null=True, blank=True,
         help_text=_("Optional title to display. If not supplied, the filename "
