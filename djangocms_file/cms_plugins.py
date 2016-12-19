@@ -10,6 +10,7 @@ from .models import File
 class FilePlugin(CMSPluginBase):
     model = File
     name = _("File")
+    module = "Basis"
     render_template = "cms/plugins/file.html"
     text_enabled = True
 
