@@ -105,7 +105,10 @@ class File(CMSPlugin):
         return None
 
     def file_exists(self):
-        return default_storage.exists(self.file.name)
+        try:
+            return default_storage.exists(self.file.name)
+        except Exception as e:
+            return False
 
     def get_file_name(self):
         return os.path.basename(self.file.name)
