@@ -108,6 +108,8 @@ class File(CMSPlugin):
         try:
             return default_storage.exists(self.file.name)
         except Exception as e:
+            print self.file.name
+            print "There is encoding issues with this filename"
             return False
 
     def get_file_name(self):
