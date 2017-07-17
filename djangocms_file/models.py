@@ -26,7 +26,7 @@ class UploadPath(object):
         self.path = sub_path
 
     def __call__(self, instance, filename):
-        return "files/%s/%s" % (connection.schema_name, filename)
+        return "files/%s" % (filename)
 
 get_upload_path = UploadPath('FilePlugin')
 
