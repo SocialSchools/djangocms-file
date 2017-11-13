@@ -1,11 +1,11 @@
-import os
+# -*- coding: utf-8 -*-
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
-from .models import File
+from .models import File, Folder
 
 
 class FilePlugin(CMSPluginBase):
@@ -17,26 +17,55 @@ class FilePlugin(CMSPluginBase):
 
     fieldsets = [
         (None, {
-            'fields': ('title', 'file', 'tooltip', 'target', 'show_pdf_preview', )
-        })
+            'fields': (
+                'file_src',
+                'file_name',
+            )
+        }),
+        (_('Advanced settings'), {
+            'classes': ('collapse',),
+            'fields': (
+                'template',
+                ('link_target', 'link_title'),
+                'show_file_size',
+                'attributes',
+            )
+        }),
+    ]
+
+    def get_render_template(self, context, instance, placeholder):
+        return 'djangocms_file/{}/file.html'.format(instance.template)
+
+
+class FolderPlugin(CMSPluginBase):
+    model = Folder
+    name = _('Folder')
+    text_enabled = True
+
+    fieldsets = [
+        (None, {
+            'fields': (
+                'folder_src',
+            )
+        }),
+        (_('Advanced settings'), {
+            'classes': ('collapse',),
+            'fields': (
+                'template',
+                'link_target',
+                'show_file_size',
+                'attributes',
+            )
+        }),
     ]
 
     def render(self, context, instance, placeholder):
-        pdf = False
-        ext = os.path.splitext(instance.file.name)[-1].lower()
-        if ext == '.pdf':
-            pdf = True
-        context.update({
-            'pdf': pdf,
-            'object': instance,
-            'placeholder': placeholder
-        })
-        return context
+        context['folder_files'] = instance.get_files()
+        return super(FolderPlugin, self).render(context, instance, placeholder)
 
-    def icon_src(self, instance):
-        file_icon = instance.get_icon_url()
-        if file_icon:
-            return file_icon
-        return settings.STATIC_URL + u"cms/img/icons/plugins/file.png"
+    def get_render_template(self, context, instance, placeholder):
+        return 'djangocms_file/{}/folder.html'.format(instance.template)
+
 
 plugin_pool.register_plugin(FilePlugin)
+plugin_pool.register_plugin(FolderPlugin)
