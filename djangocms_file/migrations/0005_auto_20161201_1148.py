@@ -6,12 +6,11 @@ import djangocms_file.models
 
 
 class Migration(migrations.Migration):
-    pass
-    # dependencies = [
-    #     ('djangocms_file', '0004_set_related_name_for_cmsplugin_ptr'),
-    # ]
+    dependencies = [
+        ('djangocms_file', '0004_set_related_name_for_cmsplugin_ptr'),
+    ]
 
-    # operations = [
+    operations = [
     #     migrations.AddField(
     #         model_name='file',
     #         name='show_pdf_preview',
@@ -22,4 +21,4 @@ class Migration(migrations.Migration):
     #         name='file',
     #         field=models.FileField(upload_to=djangocms_file.models.UploadPath(b'FilePlugin'), verbose_name='file'),
     #     ),
-    # ]
+    ]
