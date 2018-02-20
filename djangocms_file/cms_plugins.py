@@ -20,6 +20,7 @@ class FilePlugin(CMSPluginBase):
             'fields': (
                 'file_src',
                 'file_name',
+                'show_pdf_preview',
             )
         }),
         (_('Advanced settings'), {
