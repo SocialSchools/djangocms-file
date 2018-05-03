@@ -12,7 +12,7 @@ class FilePlugin(CMSPluginBase):
     model = File
     name = _("File")
     render_template = "cms/plugins/file.html"
-    module = "Basis"
+    module = "Basis plugins"
     text_enabled = True
 
     fieldsets = [
