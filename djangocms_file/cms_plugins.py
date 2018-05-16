@@ -10,7 +10,7 @@ from .models import File, Folder
 ICON_CLASS = {
     '': 'fa fa-file-o',
     'pdf': 'fa fa-file-pdf-o',
-    'mp3': 'fa-file-audio-o',
+    'mp3': 'fa fa-file-audio-o',
     'py': 'fa fa-file-code-o',
     'java': 'fa fa-file-code-o',
     'c': 'fa fa-file-code-o',
