@@ -7,6 +7,29 @@ from cms.plugin_pool import plugin_pool
 
 from .models import File, Folder
 
+ICON_CLASS = {
+    '': 'fa fa-file-o',
+    'pdf': 'fa fa-file-pdf-o',
+    'mp3': 'fa-file-audio-o',
+    'py': 'fa file-code-o',
+    'java': 'fa file-code-o',
+    'c': 'fa file-code-o',
+    'zip': 'fa file-archive-o',
+    'tar.gz': 'fa file-archive-o',
+    'xls': 'fa file-excel-o',
+    'xlsx': 'fa file-excel-o',
+    'xlt': 'fa file-excel-o',
+    'txt': 'fa file-text-o',
+    'text': 'fa file-text-o',
+    'md': 'fa file-text-o',
+    'mp4': 'fa file-video-o',
+    'avi': 'fa file-video-o',
+    'mkv': 'fa file-video-o',
+    'png': 'fa file-image-o',
+    'jpeg': 'fa file-word-o',
+    'jpg': 'fa file-word-o',
+    'gif': 'fa file-word-o',
+}
 
 class FilePlugin(CMSPluginBase):
     model = File
@@ -35,6 +58,10 @@ class FilePlugin(CMSPluginBase):
     ]
 
     def get_render_template(self, context, instance, placeholder):
+        file_extension = ''
+        if instance.file_src.extension:
+            file_extension = instance.file_src.extension
+        context['file_extension_class'] = ICON_CLASS[file_extension]
         return 'djangocms_file/{}/file.html'.format(instance.template)
 
 
