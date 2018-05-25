@@ -12,16 +12,18 @@ def migrate_to_filer(apps, schema_editor):
     FileInstance = apps.get_model('djangocms_file', 'File')
     plugins = FileInstance.objects.all()
 
-    for plugin in plugins:
-        if plugin.file:
-            filesrc = File.objects.get_or_create(
-                file=plugin.file.file,
-                defaults={
-                    'name': plugin.file.name,
-                }
-            )[0]
-            plugins.filter(pk=plugin.pk).update(file_src=filesrc)
-
+    try:
+        for plugin in plugins:
+            if plugin.file:
+                filesrc = File.objects.get_or_create(
+                    file=plugin.file.file,
+                    defaults={
+                        'name': plugin.file.name,
+                    }
+                )[0]
+                plugins.filter(pk=plugin.pk).update(file_src=filesrc)
+    except Exception as e:
+        print e
 
 class Migration(migrations.Migration):
 
