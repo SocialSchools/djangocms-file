@@ -65,10 +65,13 @@ class FilePlugin(CMSPluginBase):
     ]
 
     def get_render_template(self, context, instance, placeholder):
-        file_extension = ''
         if instance.file_src.extension:
             file_extension = instance.file_src.extension
-        context['file_extension_class'] = ICON_CLASS[file_extension]
+        if ICON_CLASS.has_key(file_extension):
+            context['file_extension_class'] = ICON_CLASS[file_extension]
+        else:
+            context['file_extension_class'] = ICON_CLASS['']
+
         return 'djangocms_file/{}/file.html'.format(instance.template)
 
 
