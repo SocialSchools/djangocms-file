@@ -65,7 +65,7 @@ class FilePlugin(CMSPluginBase):
     ]
 
     def get_render_template(self, context, instance, placeholder):
-        if instance.file_src.extension:
+        if instance.file_src and instance.file_src.extension:
             file_extension = instance.file_src.extension
         if ICON_CLASS.has_key(file_extension):
             context['file_extension_class'] = ICON_CLASS[file_extension]
