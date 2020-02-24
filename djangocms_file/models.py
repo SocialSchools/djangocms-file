@@ -1,8 +1,14 @@
+# -*- coding: utf-8 -*-
+"""
+Enables the user to add a "File" plugin that displays a file wrapped by
+an <anchor> tag.
+"""
+from __future__ import unicode_literals
 
-from django.db import models
 from django.conf import settings
-from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext, ugettext_lazy as _
+from django.db import models
+from django.utils.translation import ugettext
+from django.utils.translation import ugettext_lazy as _
 
 from cms.models import CMSPlugin
 try:
@@ -18,9 +24,9 @@ from cms.utils.compat.dj import python_2_unicode_compatible
 from django.utils.deconstruct import deconstructible
 
 from djangocms_attributes_field.fields import AttributesField
-
 from filer.fields.file import FilerFileField
 from filer.fields.folder import FilerFolderField
+from six import python_2_unicode_compatible
 
 
 LINK_TARGET = (
@@ -55,7 +61,7 @@ class UploadPath(object):
 get_upload_path = UploadPath('FilePlugin')
 
 @python_2_unicode_compatible
-class File(CMSPlugin):
+class AbstractFile(CMSPlugin):
     """
     Renders a file wrapped by an anchor
     """
@@ -113,7 +119,11 @@ class File(CMSPlugin):
         CMSPlugin,
         related_name='%(app_label)s_%(class)s',
         parent_link=True,
+        on_delete=models.CASCADE,
     )
+
+    class Meta:
+        abstract = True
 
     def __str__(self):
         if self.file_src and self.file_src.label:
@@ -134,7 +144,7 @@ class File(CMSPlugin):
 
 
 @python_2_unicode_compatible
-class Folder(CMSPlugin):
+class AbstractFolder(CMSPlugin):
     """
     Renders a folder plugin to the selected tempalte
     """
@@ -178,7 +188,11 @@ class Folder(CMSPlugin):
         CMSPlugin,
         related_name='%(app_label)s_%(class)s',
         parent_link=True,
+        on_delete=models.CASCADE,
     )
+
+    class Meta:
+        abstract = True
 
     def __str__(self):
         if self.folder_src and self.folder_src.name:
@@ -196,8 +210,18 @@ class Folder(CMSPlugin):
         self.folder_src = oldinstance.folder_src
 
     def get_files(self):
-        folder_files = []
-        if self.folder_src:
-            for folder in self.folder_src.files:
-                folder_files.append(folder)
-        return folder_files
+        if not self.folder_src:
+            return []
+        return list(self.folder_src.files)
+
+
+class File(AbstractFile):
+
+    class Meta:
+        abstract = False
+
+
+class Folder(AbstractFolder):
+
+    class Meta:
+        abstract = False

@@ -3,6 +3,48 @@ Changelog
 =========
 
 
+2.4.0 (2020-01-29)
+==================
+
+* Added support for Django 3.0
+* Added further tests to raise coverage
+* Fixed smaller issues found during testing
+
+
+2.3.0 (2019-04-30)
+==================
+
+* Added support for Django 2.2 and django CMS 3.7
+* Removed support for Django 2.0
+* Extended test matrix
+* Added isort and adapted imports
+* Adapted code base to align with other supported addons
+
+
+2.2.0 (2018-12-12)
+==================
+
+* Fixed test matrix
+* Exclude ``tests`` folder from release build
+* Added missing migrations for Django 2.1
+* Added abstract models for ``File`` and ``Folder``
+* Improved readability of ``Folder.get_files``
+
+
+2.1.0 (2018-11-13)
+==================
+
+* Removed support for Django 1.8, 1.9, 1.10
+
+
+2.0.3 (2018-11-05)
+==================
+
+* Add support for Django 1.10, 1.11, 2.0 and 2.1
+* Adapted testing infrastructure (tox/travis) to incorporate
+  django CMS 3.5 and 4.0
+
+
 2.0.2 (2016-11-22)
 ==================
 
